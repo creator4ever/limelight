@@ -26,8 +26,9 @@ class LimelightException extends \Exception
     public function __construct($message = 'Requested plugin not found.')
     {
         $config = Config::getInstance();
-
-        $this->debug = $config->get('debug');
+        // prevent infinity loop occured when missing 'debug' key in config.php
+        // config->get() throw exception and then coming here, config->get() ... loop
+        $this->debug = true;
 
         parent::__construct($message);
     }
